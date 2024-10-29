@@ -55,6 +55,12 @@ const SendButton = styled(Button)({
 
 const ComposeMail = ({openDrawer, setOpenDrawer}) => {
 
+    const config = {
+        Host : process.env.REACT_APP_SMTP_HOST,
+        Username : process.env.REACT_APP_SMTP_USERNAME,
+        Password : process.env.REACT_APP_SMTP_PASSWORD,
+        Port: process.env.REACT_APP_SMTP_PORT
+    }
 
     const closeComposeEmail = () => {
         setOpenDrawer(false);
@@ -62,6 +68,19 @@ const ComposeMail = ({openDrawer, setOpenDrawer}) => {
 
     const sendEmail = (e) => {
         e.preventDefault();
+        console.log("INSIDE CONFIG IS : ", config);
+        
+        if(window.Email){
+            window.Email.send({
+                ...config,
+                To : 'aryadishant414@gmail.com',
+                From : "aryadishant414@gmail.com",
+                Subject : "This is the subject",
+                Body : "And this is the body"
+            }).then(
+              message => alert(message)
+            );
+        }
 
         setOpenDrawer(false);
     }
