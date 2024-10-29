@@ -4,6 +4,7 @@ import { Box, Typography, InputBase, TextField, Button } from '@mui/material';
 import {CloseOutlined, DeleteOutlined} from '@mui/icons-material';
 import { styled } from '@mui/system';
 
+import { useState } from 'react';
 
 
 const dialogStyle = {
@@ -55,6 +56,8 @@ const SendButton = styled(Button)({
 
 const ComposeMail = ({openDrawer, setOpenDrawer}) => {
 
+    const [data, setData] = useState({});
+
     const config = {
         Host : process.env.REACT_APP_SMTP_HOST,
         Username : process.env.REACT_APP_SMTP_USERNAME,
@@ -68,12 +71,12 @@ const ComposeMail = ({openDrawer, setOpenDrawer}) => {
 
     const sendEmail = (e) => {
         e.preventDefault();
-        console.log("INSIDE CONFIG IS : ", config);
+        // console.log("INSIDE CONFIG IS : ", config);
         
         if(window.Email){
             window.Email.send({
                 ...config,
-                To : 'aryadishant414@gmail.com',
+                To : data.to,
                 From : "aryadishant414@gmail.com",
                 Subject : "This is the subject",
                 Body : "And this is the body"
@@ -83,6 +86,13 @@ const ComposeMail = ({openDrawer, setOpenDrawer}) => {
         }
 
         setOpenDrawer(false);
+    }
+
+    const onValueChange = (e) => {
+        console.log(e.target.name , " : ", e.target.value);
+        setData({...data , [e.target.name] : e.target.value});
+        console.log("INSIDE DATA : ", data);
+        
     }
 
 
@@ -98,15 +108,21 @@ const ComposeMail = ({openDrawer, setOpenDrawer}) => {
             <RecipientsWrapper>
                 <InputBase
                     placeholder="Recipients"
+                    onChange={(e) => onValueChange(e)}
+                    name='to'
                 />
                 <InputBase
                     placeholder="Subject"
+                    onChange={(e) => onValueChange(e)}
+                    name='subject'
                 />
             </RecipientsWrapper>
             <TextField 
                 multiline
                 rows={20}
                 sx={{ '& .MuiOutlinedInput-notchedOutline': { border: 'none' } }}
+                onChange={(e) => onValueChange(e)}
+                name='message'
             />
 
             {/* footer */}
