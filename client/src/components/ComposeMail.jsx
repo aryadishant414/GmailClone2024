@@ -5,6 +5,8 @@ import {CloseOutlined, DeleteOutlined} from '@mui/icons-material';
 import { styled } from '@mui/system';
 
 import { useState } from 'react';
+import useApi from '../hooks/useApi'; // our custom hook
+import { API_URLS } from '../services/api.urls';
 
 
 const dialogStyle = {
@@ -57,6 +59,7 @@ const SendButton = styled(Button)({
 const ComposeMail = ({openDrawer, setOpenDrawer}) => {
 
     const [data, setData] = useState({});
+    const sentEmailService = useApi(API_URLS.saveSentEmail);
 
     const config = {
         Host : process.env.REACT_APP_SMTP_HOST,
@@ -72,17 +75,41 @@ const ComposeMail = ({openDrawer, setOpenDrawer}) => {
     const sendEmail = (e) => {
         e.preventDefault();
         // console.log("INSIDE CONFIG IS : ", config);
+
+        // console.log("INSIDE DATA : ", data);
+        
         
         if(window.Email){
             window.Email.send({
                 ...config,
                 To : data.to,
                 From : "aryadishant414@gmail.com",
-                Subject : "This is the subject",
-                Body : "And this is the body"
+                Subject : data.subject,
+                Body : data.message
             }).then(
               message => alert(message)
             );
+        }
+
+        const payload = {
+            to: data.to,
+            from: 'aryadishant414@gmail.com',
+            subject: data.subject,
+            body: data.message,
+            date: new Date(),
+            image: '',
+            name: 'Dishant Arya',
+            starred: false,
+            type: 'sent'
+        }
+
+        sentEmailService.call(payload);
+
+        if(!sentEmailService.error) {
+            setOpenDrawer(false);
+            setData({});
+        } else {
+
         }
 
         setOpenDrawer(false);
