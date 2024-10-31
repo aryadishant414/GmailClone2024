@@ -3,7 +3,7 @@ import Header from "../components/Header";
 import SideBar from "../components/SideBar";
 
 
-
+// this file contains all the components of our GMAIL CLONE
 const Main = () => {
 
     const [openDrawer, setOpenDrawer] = useState(true);
