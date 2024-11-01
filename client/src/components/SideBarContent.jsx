@@ -33,12 +33,12 @@ const Container = styled(Box)({
 
 const SideBarContent = () => {
 
-    const [openDrawer, setOpenDrawer] = useState(false);
+    const [openDialog, setOpenDialog] = useState(false);
 
     
 
     const onComposeClick = () => {
-        setOpenDrawer(true);
+        setOpenDialog(true);
     }
 
   return (
@@ -58,7 +58,7 @@ const SideBarContent = () => {
                 ))
             }
         </List>
-        <ComposeMail openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
+        <ComposeMail openDialog={openDialog} setOpenDialog={setOpenDialog} />
 
     </Container>
   )

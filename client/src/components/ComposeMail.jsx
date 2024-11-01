@@ -56,7 +56,7 @@ const SendButton = styled(Button)({
     width: '100px'
 });
 
-const ComposeMail = ({openDrawer, setOpenDrawer}) => {
+const ComposeMail = ({openDialog, setOpenDialog}) => {
 
     const [data, setData] = useState({});
     const sentEmailService = useApi(API_URLS.saveSentEmail);
@@ -69,7 +69,7 @@ const ComposeMail = ({openDrawer, setOpenDrawer}) => {
     }
 
     const closeComposeEmail = () => {
-        setOpenDrawer(false);
+        setOpenDialog(false);
     }
 
     const sendEmail = (e) => {
@@ -106,13 +106,13 @@ const ComposeMail = ({openDrawer, setOpenDrawer}) => {
         sentEmailService.call(payload);
 
         if(!sentEmailService.error) {
-            setOpenDrawer(false);
+            setOpenDialog(false);
             setData({});
         } else {
 
         }
 
-        setOpenDrawer(false);
+        setOpenDialog(false);
     }
 
     const onValueChange = (e) => {
@@ -125,7 +125,7 @@ const ComposeMail = ({openDrawer, setOpenDrawer}) => {
 
     return (
         <Dialog
-            open={openDrawer}
+            open={openDialog}
             PaperProps={{sx: dialogStyle}}
         >
             <Header>
@@ -155,7 +155,7 @@ const ComposeMail = ({openDrawer, setOpenDrawer}) => {
             {/* footer */}
             <Footer>
                 <SendButton onClick={(e) => sendEmail(e)}>Send</SendButton>
-                <DeleteOutlined onClick={() => setOpenDrawer(false)} />
+                <DeleteOutlined onClick={() => setOpenDialog(false)} />
             </Footer>
 
         </Dialog>
