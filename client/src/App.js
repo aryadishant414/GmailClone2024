@@ -1,16 +1,26 @@
-
-// import Main from './pages/Main';
+import { lazy, Suspense } from 'react'; // used to show spinner in react when a component is being loaded by 'lazy component'
 
 import {Route, RouterProvider, createBrowserRouter, createRoutesFromElements, Navigate} from 'react-router-dom';
 import { routes } from './routes/routes';
+import SuspenseLoader from './components/common/SuspenseLoader';
+
+
+
+
+// import ErrorComponent from './components/common/ErrorComponent';
+const ErrorComponent = lazy(() => import('./components/common/ErrorComponent'))
+
+
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
-        <Route path={routes.main.path} element={<Navigate to={`${routes.main.path}/inbox`} />} />
+        <Route path={routes.main.path} element={<Navigate to={`${routes.emails.path}/inbox`} />} />
+        
         <Route path={routes.main.path} element={<routes.main.element />}>
-            <Route path={`${routes.main.path}/:type`} element={<routes.main.element />}/>
-            <Route path={routes.view.path} element={<routes.view.element />} />
+            <Route path={`${routes.emails.path}/:type`} element={<routes.emails.element />} errorElement={<ErrorComponent />}  />
+            <Route path={routes.view.path} element={<routes.view.element />} errorElement={<ErrorComponent />} />
         </Route>
 
         <Route path={routes.invalid.path} element={<Navigate to={`${routes.emails.path}/inbox`} />} />
@@ -20,10 +30,9 @@ const router = createBrowserRouter(
 
 function App() {
   return (
-    <RouterProvider router={router} />
-    // <div className="App">
-    //   <Main />
-    // </div>
+    <Suspense fallback={SuspenseLoader}>
+      <RouterProvider router={router} />
+    </Suspense>
   );
 }
 

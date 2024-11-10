@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Header from "../components/Header";
 import SideBar from "../components/SideBar";
 
-import Emails from '../components/Emails';
+import { Outlet } from "react-router-dom";
+import SuspenseLoader from "../components/common/SuspenseLoader";
 
 
 
@@ -16,11 +17,14 @@ const Main = () => {
     } 
 
     return(
-        <div>
+        <>
             <Header toggleDrawer={toggleDrawer} />
             <SideBar openDrawer={openDrawer} />
-            <Emails openDrawer={openDrawer} />
-        </div>
+            
+            <Suspense fallback={SuspenseLoader}>
+                <Outlet context={{openDrawer}} /> {/*used to show dynamic content inside a parent route */}
+            </Suspense>
+        </>
     )
 };
 
